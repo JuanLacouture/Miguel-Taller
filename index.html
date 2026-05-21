@@ -97,14 +97,13 @@ button#send:disabled{opacity:0.45;cursor:not-allowed;transform:none}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
-    <p class="hint">Powered by Google Gemini Flash · Precios orientativos Colombia 2024–2025</p>
+    <p class="hint">Powered by Groq · Llama 3 · Precios orientativos Colombia 2024–2025</p>
   </div>
 </div>
 
 <script>
-const API_KEY = 'AIzaSyCp2AZOywpe7m1df0inkObHDyoG8HQNwJI';
-// Modelo actualizado y endpoint correcto
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+const API_KEY = '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';
+const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 const SYSTEM = `Eres VoltIQ, un asesor experto y cercano en vehículos eléctricos y cargadores para el mercado colombiano. Respondes en español, de forma clara, amigable y profesional. Usas emojis con moderación.
 
@@ -193,7 +192,8 @@ REGLAS:
 - Precios siempre en COP con puntos de miles
 - Si preguntan por cargador para un carro, recomienda el más adecuado y explica por qué
 - Máximo 220 palabras por respuesta
-- Para comparaciones usa estructura clara con ventajas y desventajas`;
+- Para comparaciones usa estructura clara con ventajas y desventajas
+- Si preguntan algo fuera del tema eléctrico, redirige amablemente`;
 
 const chatEl = document.getElementById('chat');
 const inp = document.getElementById('inp');
@@ -260,16 +260,23 @@ async function sendMsg() {
   inp.value = '';
   inp.style.height = 'auto';
   addMsg('user', text);
-  history.push({ role: 'user', parts: [{ text }] });
+  history.push({ role: 'user', content: text });
   showTyping();
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM }] },
-        contents: history,
-        generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
+        model: 'llama3-70b-8192',
+        messages: [
+          { role: 'system', content: SYSTEM },
+          ...history
+        ],
+        max_tokens: 800,
+        temperature: 0.7
       })
     });
     const data = await res.json();
@@ -277,9 +284,9 @@ async function sendMsg() {
     if (data.error) {
       addMsg('bot', '⚠️ Error: ' + data.error.message);
     } else {
-      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude procesar tu pregunta. Intenta de nuevo.';
+      const reply = data?.choices?.[0]?.message?.content || 'No pude procesar tu pregunta. Intenta de nuevo.';
       addMsg('bot', reply);
-      history.push({ role: 'model', parts: [{ text: reply }] });
+      history.push({ role: 'assistant', content: reply });
     }
   } catch(e) {
     hideTyping();
