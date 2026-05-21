@@ -103,7 +103,8 @@ button#send:disabled{opacity:0.45;cursor:not-allowed;transform:none}
 
 <script>
 const API_KEY = 'AIzaSyCgPvcMvOioZYDvFUk7cBQyu4YQZ16cJnU';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+// Modelo actualizado y endpoint correcto
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 const SYSTEM = `Eres VoltIQ, un asesor experto y cercano en vehículos eléctricos y cargadores para el mercado colombiano. Respondes en español, de forma clara, amigable y profesional. Usas emojis con moderación.
 
@@ -120,17 +121,15 @@ BYD Atto 3 (SUV compacto)
 - Ideal para: familias, uso mixto ciudad/carretera
 
 BYD Seal (Sedán deportivo)
-- Precio: $195.000.000 – $239.000.000 COP (versión AWD)
+- Precio: $195.000.000 – $239.000.000 COP
 - Batería: 82.56 kWh | Autonomía: ~570 km (CLTC) / ~430 km real
 - Carga rápida DC: hasta 150 kW (0–80% en ~30 min)
 - Carga AC: 11 kW Tipo 2 | Conectores: CCS2 + Tipo 2
-- Ideal para: viajes intercity, amantes de la tecnología
 
 BYD Dolphin (Hatchback urbano)
 - Precio: $99.900.000 – $119.000.000 COP
 - Batería: 44.9 kWh | Autonomía: ~340 km / ~270 km real
 - Carga rápida DC: hasta 60 kW | Carga AC: 7 kW Tipo 2
-- Ideal para: uso urbano, primer eléctrico, presupuesto ajustado
 
 Chery Tiggo EX5 (SUV mediano)
 - Precio: $129.900.000 – $149.000.000 COP
@@ -140,55 +139,42 @@ Chery Tiggo EX5 (SUV mediano)
 Kia EV6 (SUV deportivo premium)
 - Precio: $219.000.000 – $289.000.000 COP
 - Batería: 77.4 kWh | Autonomía: ~506 km
-- Carga rápida DC: hasta 233 kW (plataforma 800V — ultra rápida)
+- Carga rápida DC: hasta 233 kW (plataforma 800V)
 - Carga AC: 11 kW Tipo 2
-- Ideal para: viajeros frecuentes, premium, tecnología de punta
 
 Renault Kwid E-Tech
 - Precio: $72.900.000 – $84.000.000 COP
 - Batería: 26.8 kWh | Autonomía: ~300 km / ~230 km real
-- Solo carga AC: hasta 7.4 kW
-- Ideal para: ciudad, presupuesto bajo. NO recomendado para viajes largos
+- Solo carga AC: hasta 7.4 kW — NO recomendado para viajes largos
 
 MG4 Electric
 - Precio: $119.000.000 – $149.000.000 COP
 - Batería: 51–64 kWh | Autonomía: ~350–450 km
 - Carga rápida DC: hasta 135 kW | Carga AC: 11 kW Tipo 2
-- Muy buena relación precio-autonomía
 
 Volvo EX30
 - Precio: $189.000.000 – $215.000.000 COP
 - Batería: 51 kWh | Autonomía: ~344 km
-- Carga rápida DC: hasta 153 kW (0–80% en ~26 min)
-- Carga AC: 11 kW Tipo 2
+- Carga rápida DC: hasta 153 kW | Carga AC: 11 kW Tipo 2
 
----
+CARGADORES:
 
-CARGADORES DISPONIBLES EN COLOMBIA:
-
-Wallbox Pulsar Plus 7.2 kW (el más vendido)
+Wallbox Pulsar Plus 7.2 kW (más vendido)
 - Precio instalado: $2.800.000 – $3.500.000 COP
-- Potencia: 7.2 kW monofásico | Conector: Tipo 2
-- App móvil, compatible con todos los EV
-- Carga BYD Atto 3 en ~9 horas (0–100%)
+- Potencia: 7.2 kW monofásico | Conector: Tipo 2 | App móvil
 
 Wallbox Copper SB 22 kW
 - Precio instalado: $4.200.000 – $5.500.000 COP
 - Potencia: 22 kW trifásico (requiere medidor trifásico)
-- Conector: Tipo 2 | App + RFID
 
 Kinsend 7 kW (económico)
 - Equipo: $1.200.000 – $1.800.000 COP + instalación $800.000 – $1.500.000 COP
-- Sin app, uso simple
 
 Cargador portátil EVSE emergencia
-- Precio: $350.000 – $700.000 COP
-- Potencia: 2.3–3.7 kW — solo emergencias, muy lento
+- Precio: $350.000 – $700.000 COP | Potencia: 2.3–3.7 kW — solo emergencias
 
 Red pública Enel X (CC Andino, Santafé, Gran Estación, Éxito - Bogotá)
 - Costo: ~$1.500 – $2.500 COP/kWh
-
----
 
 COSTOS OPERATIVOS:
 - Electricidad Bogotá estrato 4: ~$850 COP/kWh
@@ -200,18 +186,13 @@ COSTOS OPERATIVOS:
 BENEFICIOS TRIBUTARIOS (Ley 2128 de 2021):
 - Exención total IVA (19%)
 - Descuento 10% arancel importación
-- Exención impuesto de rodamiento (varía por municipio)
+- Exención impuesto de rodamiento
 - Bogotá: exento de pico y placa permanentemente
-- Medellín: exento impuesto vehículos el primer año
-
----
 
 REGLAS:
 - Precios siempre en COP con puntos de miles
-- Si preguntan por cargador para un carro específico, recomienda el más adecuado y explica por qué
-- Sé honesto sobre limitaciones reales (autonomía real vs anunciada, red de carga limitada fuera de ciudades)
+- Si preguntan por cargador para un carro, recomienda el más adecuado y explica por qué
 - Máximo 220 palabras por respuesta
-- Si preguntan algo fuera del tema eléctrico, redirige amablemente
 - Para comparaciones usa estructura clara con ventajas y desventajas`;
 
 const chatEl = document.getElementById('chat');
@@ -293,9 +274,13 @@ async function sendMsg() {
     });
     const data = await res.json();
     hideTyping();
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude procesar tu pregunta. Intenta de nuevo.';
-    addMsg('bot', reply);
-    history.push({ role: 'model', parts: [{ text: reply }] });
+    if (data.error) {
+      addMsg('bot', '⚠️ Error: ' + data.error.message);
+    } else {
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude procesar tu pregunta. Intenta de nuevo.';
+      addMsg('bot', reply);
+      history.push({ role: 'model', parts: [{ text: reply }] });
+    }
   } catch(e) {
     hideTyping();
     addMsg('bot', '⚠️ Error de conexión. Verifica tu internet e intenta de nuevo.');
